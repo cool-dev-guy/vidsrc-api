@@ -54,7 +54,10 @@ def key_permutation(key, data) -> str:
     return final_key
 async def handle_vidplay(url) -> str:
     key1, key2 = requests.get(
-        'https://raw.githubusercontent.com/Claudemirovsky/worstsource-keys/keys/keys.json'
+        # KEY PROVIDERS
+        # 'https://raw.githubusercontent.com/Claudemirovsky/worstsource-keys/keys/keys.json'
+        # 'https://raw.githubusercontent.com/rawgimaster/vidsrc-keys/main/keys.json'
+        'https://raw.githubusercontent.com/Ciarands/vidsrc-keys/main/keys.json'
     ).json()  # love u claude
     decoded_id = key_permutation(key1, url.split('/e/')[1].split('?')[0]).encode('Latin_1')
     encoded_result = key_permutation(key2, decoded_id).encode('Latin_1')
