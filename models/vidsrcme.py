@@ -46,15 +46,21 @@ async def vidsrcme(source,url):
 
             hls_url = re.search(r'file:"([^"]*)"', req.text).group(1)
             hls_url = re.sub(r'\/\/\S+?=', '', hls_url).replace('#2', '')
-            try:
-                req = requests.post("https://www.base64decode.org/",data={
-                    'input': f'{hls_url}',
-                    'charset': 'UTF-8',
-                })
-                hls_url = BeautifulSoup(req.text,'html.parser').find('textarea',id='output').get_text()
-                # hls_url = "TRUNCATED, REQUEST AGAIN" if 'm3u8' not in hls_url else hls_url
-            except:
-                return 1309,_seed
+            attempt = 0
+            max_try = 5 # SET ANY VALUE
+            for i in range(max_try):
+                try:
+                    req = requests.post("https://www.base64decode.org/",data={
+                        'input': f'{hls_url}',
+                        'charset': 'UTF-8',
+                    })
+                    hls_url = BeautifulSoup(req.text,'html.parser').find('textarea',id='output').get_text()
+                    if 'm3u8' not in hls_url:
+                        continue
+                    else:
+                        return hls_url,_seed
+                except:
+                    return 1309,_seed
             # set_pass = re.search(r'var pass_path = "(.*?)";', req.text).group(1)
             # if set_pass.startswith("//"):
             #     set_pass = f"https:{set_pass}"
