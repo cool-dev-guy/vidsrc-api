@@ -23,6 +23,7 @@ A simple web scrapper based on this [resolver](https://github.com/Ciarands).
 - endpoints:
   - `/source/{db_id}`
   - `/extra/{db_id}`
+  - `/subs/?url={subtitle_url@opensubtitles.org}`
 
 - parameters:
   - `s` - season (series only)
@@ -42,4 +43,5 @@ ERROR CODES
 1401 : vidplay error.
 
 1500 : not found error.
+500  : internal error/fetch error
 ```
