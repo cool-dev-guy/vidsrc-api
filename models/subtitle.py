@@ -1,6 +1,8 @@
 from typing import Optional
 import requests
 async def subfetch(code, language) -> Optional[str]:
+    sub_base_url = "https://api-vidsrc-rouge.vercel.app/subs?url="
+    print(code)
     if "_" in code:
         code, season_episode = code.split("_")
         season, episode = season_episode.split('x')
@@ -12,10 +14,9 @@ async def subfetch(code, language) -> Optional[str]:
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36',
         'x-user-agent': 'trailers.to-UA',
     }
-
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         best_subtitle = max(response.json(), key=lambda x: x.get('score', 0), default=None)
         if best_subtitle is None:return None
-        return best_subtitle.get("SubDownloadLink")
+        return f"{sub_base_url}{best_subtitle.get('SubDownloadLink')}"
     return 1310
