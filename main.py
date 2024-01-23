@@ -76,8 +76,8 @@ async def source(dbid:str = '',s:int=None,e:int=None,l:str='eng'):
         results = await asyncio.gather(
             *[models.vidsrcme(s,url) for s in source]
         )
-        sub_seed = results[0][1]
-        subtitle = await models.subfetch(sub_seed,language)
+        sub_seed = results[0][1] if results[0] else 500
+        subtitle = await models.subfetch(sub_seed,language) if sub_seed!=500 else 500
         return {'streams':[{'source':list(sources.keys())[i],'url':item[0]} for i,item in enumerate(results) if item],'subtitle':subtitle}
     else:
         raise HTTPException(status_code=400, detail=f"Invalid id: {dbid}")
