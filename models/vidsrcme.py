@@ -32,7 +32,8 @@ async def vidsrcme(source,url):
     async with httpx.AsyncClient() as client:
         response = await client.get(f"https://rcp.vidsrc.me/rcp/{source}",headers={"Referer": url})
         _html = BeautifulSoup(response.text, "html.parser")
-        _encoded = _html.find("div", {"id": "hidden"}).get("data-h")
+        _encoded = _html.find("div", {"id": "hidden"}).get("data-h") if _html.find("div", {"id": "hidden"}) else None
+        if not _encoded:return None
         _seed = _html.find("body").get("data-i")
 
         encoded_buffer = bytes.fromhex(_encoded);decoded = ""
