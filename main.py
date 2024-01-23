@@ -5,12 +5,14 @@ import asyncio
 from bs4 import BeautifulSoup
 import httpx
 import models
+from io import BytesIO
+from fastapi.responses import StreamingResponse
 
 app = FastAPI()
 # API ----- default route
 VERSION = '1.0.0'
 @app.get('/')
-def hello():
+def index():
     return {
         "project":"simple-scrape-api",
         "note":"This api is made for educational purpouse only. This is just a simple scrapper built arround `https://github.com/Ciarands` vidsrc downloader.This project was only made to prevent ads and redirects caused by the `iframe`s",
@@ -81,3 +83,17 @@ async def source(dbid:str = '',s:int=None,e:int=None,l:str='eng'):
         return {'streams':[{'source':list(sources.keys())[i],'url':item[0]} for i,item in enumerate(results) if item],'subtitle':subtitle}
     else:
         raise HTTPException(status_code=400, detail=f"Invalid id: {dbid}")
+@app.get("/subs")
+async def subs(url: str):
+    try:
+        response = requests.get(url)
+        with gzip.open(BytesIO(response.content), 'rt', encoding='utf-8') as f:
+            subtitle_content = f.read()
+
+        async def generate():
+            yield subtitle_content.encode("utf-8")
+        # lol i guess it will be srt
+        return StreamingResponse(generate(), media_type="application/octet-stream", headers={"Content-Disposition": "attachment; filename=subtitle.srt"})
+    except requests.exceptions.RequestException as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching subtitle: {e}")
+    raise HTTPException(status_code=404, detail="Subtitle not found")
