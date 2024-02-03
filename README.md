@@ -15,6 +15,7 @@ A simple web scrapper based on this [resolver](https://github.com/Ciarands).
 - Dont overload the deployment.
 - This api is made for educational purpouse only. This is just a simple scrapper built arround `https://github.com/Ciarands` vidsrc downloader.This project was only made to prevent ads and redirects caused by the `iframe`s
 - This api isnt a copy of the inspired project,but its a complete reqrite of code to make it work as an api and use async style to give vary fast results.
+- Dont perform bulk request to the api and store the m3u8's returned,cuz they may not work after 24 hours or so.This api scrape websites that have `video on demand` feature so storing it is useless.
 ```
 ### USAGE (`GET`)
 - base url:
