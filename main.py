@@ -6,7 +6,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware # CORS
 import requests,asyncio,httpx,gzip
 from bs4 import BeautifulSoup
-from models import vidsrctoget,vidsrcmeget,upcloudget,vidcloudget,smashyget,info
+from models import vidsrctoget,vidsrcmeget,info
 from io import BytesIO
 from fastapi.responses import StreamingResponse
 
