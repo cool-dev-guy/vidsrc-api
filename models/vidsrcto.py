@@ -1,3 +1,5 @@
+# VIDSRC.TO
+# file made by @cool-dev-guy using @Ciarands resolver to support fastapi.
 from urllib.parse import unquote
 import httpx,asyncio,base64,requests
 from bs4 import BeautifulSoup
@@ -54,7 +56,7 @@ async def get(dbid:str,s:int=None,e:int=None):
     url = f"https://vidsrc.to/embed/{media}/{dbid}"
     url += f"/{s}/{e}" if s and e else ''
     async with httpx.AsyncClient() as client:
-        #SHITTT
+        #SHITTT cool-dev-guys logic to bypass errors ...
         MAX_ATTEMPTS = 5
         for i in range(MAX_ATTEMPTS):
             try:
