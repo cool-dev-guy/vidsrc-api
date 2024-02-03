@@ -1,5 +1,9 @@
 # vidsrc-api
+`[ PROJECT HAS UNDERGONE VERY LARGE CHANGES IN STRUCTURE AND CONTENT ]`
+
 A simple web scrapper based on this [resolver](https://github.com/Ciarands).
+
+`If you liked it :)`
 
 <a href="https://www.buymeacoffee.com/cooldevguy"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a cool-milk&emoji=🥛&slug=cooldevguy&button_colour=222222&font_colour=ffffff&font_family=Lato&outline_colour=ffffff&coffee_colour=FFDD00" /></a>
 
@@ -32,7 +36,8 @@ A simple web scrapper based on this [resolver](https://github.com/Ciarands).
   - `l` - language(subtitle)
 
 ### RESPONSE SCEMA
-  - [UPDATE] Added a common response scheam for the endpoints,so every source is an element of an array.And the api retruns an array.
+> [UPDATE] Added a common response scheam for the endpoints,so every source is an element of an array.And the api retruns an array.
+
 
 ```json
 [
