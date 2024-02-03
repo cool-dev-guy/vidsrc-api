@@ -1,3 +1,7 @@
+# file made by @cool-dev-guy.
+# This uses fastapi.
+# Using this project involves risk.So use it at your own risk.
+# The files are never stored anywhere by the devoloper.This is just a program to scrape websites.
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware # CORS
 import requests,asyncio,httpx,gzip
