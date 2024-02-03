@@ -1,35 +1,10 @@
-# API --- vidsrc.me
-import re
 import requests
+import requests,asyncio,httpx
 from bs4 import BeautifulSoup
-import httpx
-def hunter_def(d, e, f) -> int:
-    g = list("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/");h = g[0:e];i = g[0:f];d = list(d)[::-1];j = 0;k = ""
-    for c,b in enumerate(d):
-        if b in h:j = j + h.index(b)*e**c
-    while j > 0:k = i[j%f] + k;j = (j - (j%f))//f
-    return int(k) or 0
-def hunter( h, u, n, t, e, r) -> str:
-        '''Decodes the common h,u,n,t,e,r packer'''
-        r = ""
-        i = 0
-        while i < len(h):
-            j = 0
-            s = ""
-            while h[i] is not n[e]:
-                s = ''.join([s,h[i]])
-                i = i + 1
-
-            while j < len(n):
-                s = s.replace(n[j],str(j))
-                j = j + 1
-
-            r = ''.join([r,''.join(map(chr, [hunter_def(s,e,10) - t]))])
-            i = i + 1
-
-        return r
+from . import vidsrcpro,superembed
+from . import subtitle
 async def vidsrcme(source,url):
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=30.0) as client:
         response = await client.get(f"https://rcp.vidsrc.me/rcp/{source}",headers={"Referer": url})
         _html = BeautifulSoup(response.text, "html.parser")
         _encoded = _html.find("div", {"id": "hidden"}).get("data-h") if _html.find("div", {"id": "hidden"}) else None
@@ -39,53 +14,61 @@ async def vidsrcme(source,url):
         encoded_buffer = bytes.fromhex(_encoded);decoded = ""
         for i in range(len(encoded_buffer)):decoded += chr(encoded_buffer[i] ^ ord(_seed[i % len(_seed)]))
         decoded_url = f"https:{decoded}" if decoded.startswith("//") else decoded
-
-        response = await client.get(decoded_url, follow_redirects=False, headers={"Referer": f"https://rcp.vidsrc.me/rcp/{source}"})
+        
+        response = requests.get(decoded_url, allow_redirects=False, headers={"Referer": f"https://rcp.vidsrc.me/rcp/{source}"})
         location = response.headers.get("Location")
+        if location is None:
+            return 1506,_seed
+        if "playhydrax.com" in location:
+            return 1500,_seed
         if "vidsrc.stream" in location:
             req = await client.get(location, headers={"Referer": f"https://rcp.vidsrc.me/rcp/{source}"})
-
-            hls_url = re.search(r'file:"([^"]*)"', req.text).group(1)
-            hls_url = re.sub(r'\/\/\S+?=', '', hls_url).replace('#2', '')
-            attempt = 0
-            max_try = 5 # SET ANY VALUE
-            for i in range(max_try):
-                try:
-                    req = requests.post("https://www.base64decode.org/",data={
-                        'input': f'{hls_url}',
-                        'charset': 'UTF-8',
-                    })
-                    hls_url = BeautifulSoup(req.text,'html.parser').find('textarea',id='output').get_text()
-                    if 'm3u8' not in hls_url:
-                        continue
-                    else:
-                        return hls_url,_seed
-                except:
-                    return 1309,_seed
-            # set_pass = re.search(r'var pass_path = "(.*?)";', req.text).group(1)
-            # if set_pass.startswith("//"):
-            #     set_pass = f"https:{set_pass}"
-
-            # requests.get(set_pass, headers={"Referer": source})
-            return hls_url,_seed
+            return await vidsrcpro.handle_vidsrcpro(req,source,_seed)
         if "2embed.cc" in location:
             return 1500,_seed
         if "multiembed.mov" in location:
-            '''Fallback site used by vidsrc'''
-            req = requests.get(location, headers={"Referer":  f"https://rcp.vidsrc.me/rcp/{source}"})
-            matches = re.search(r'escape\(r\)\)}\((.*?)\)', req.text)
-            processed_values = []
+            return await superembed.handle_superembed(location,source,_seed)
+async def get(dbid,s=None,e=None,l='eng'):
+    provider = "imdb" if ("tt" in dbid) else "tmdb"
+    media = 'tv' if s is not None and e is not None else "movie"
+    language = l
 
-            if not matches:
-                return f"1308 {location}",_seed
+    url = f"https://vidsrc.me/embed/{dbid}"
+    url += f"/{s}-{e}" if s and e else ''
 
-            for val in matches.group(1).split(','):
-                val = val.strip()
-                if val.isdigit() or (val[0] == '-' and val[1:].isdigit()):
-                    processed_values.append(int(val))
-                elif val[0] == '"' and val[-1] == '"':
-                    processed_values.append(val[1:-1])
-
-            unpacked = hunter(*processed_values)
-            hls_url = re.search(r'file:"([^"]*)"', unpacked).group(1)
-            return hls_url,_seed
+    response = requests.get(url)
+    _html = BeautifulSoup(response.text, "html.parser")
+    sources = {attr.text: attr.get("data-hash") for attr in _html.find_all("div", {"class": "server"})}
+        
+    # REMOVE UNWANTED SOURCES
+    try:
+        del sources['VidSrc Hydrax']
+    except:
+        pass
+    try:
+        del sources['2Embed']
+    except:
+        pass
+    # RESULT SCHEMA
+    source = []
+    for item in sources.keys():source.append(sources[item])
+    if not source:return 1404,None
+    results = await asyncio.gather(
+        *[vidsrcme(s,url) for s in source]
+    )
+    print(results)
+    sub_seed = results[0][1] if results[0] else 1500
+    subtitles = await subtitle.subfetch(sub_seed,language) if sub_seed!=500 else 500
+    return [{
+    "name":'VidSrcPRO',
+    "data":{
+            'file':results[0][0],
+            'sub':subtitles
+        },
+    },{
+    "name":'SuperEmbed',
+    "data":{
+            'file':results[1][0] if len(results)==2 else 1500,
+            'sub':results[1][1] if len(results)==2 else 1500
+        },
+    }]
