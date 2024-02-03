@@ -1,3 +1,5 @@
+# VIDSRC.ME
+# file made by @cool-dev-guy using @Ciarands resolver to support fastapi.
 import requests
 import requests,asyncio,httpx
 from bs4 import BeautifulSoup
