@@ -1,3 +1,5 @@
+# API --- filemoon --- vidsrc.to provider
+# file made by @cool-dev-guy using @Ciarands vidsrc-to-resolver
 import requests
 import re
 def unpack(p, a, c, k, e=None, d=None) -> str:
@@ -31,7 +33,7 @@ async def handle_filemoon(url) -> str:
     matches = re.search(r'return p}\((.+)\)', req.text)
     
     processed_matches = []
-
+    # these are specific to filemoon(cool lol)
     if not matches:
       for i in range(10):
         req = requests.get(url)
