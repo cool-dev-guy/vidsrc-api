@@ -1,3 +1,4 @@
+# CUSTOM utility FUNCTIONS FOR SUBTITLE MANAGEMENT.
 from typing import Optional
 import requests
 from urllib.parse import unquote
@@ -39,3 +40,4 @@ async def vscsubs(url):
         except:
             continue
     return {}
+# file made by @cool-dev-guy
