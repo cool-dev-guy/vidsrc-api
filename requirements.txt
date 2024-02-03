@@ -1,0 +1,5 @@
+bs4
+httpx
+fastapi
+uvicorn[standard]
+requests
