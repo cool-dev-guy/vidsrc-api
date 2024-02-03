@@ -1,4 +1,5 @@
 # THE hunter DECODER
+# file made by @cool-dev-guy by using @Ciarands hunter decoder.(thanks Ciarands)
 def hunter_def(d, e, f) -> int:
     charset = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/"
     source_base = charset[0:e]
