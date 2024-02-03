@@ -3,8 +3,10 @@
 
 A simple web scrapper based on this [resolver](https://github.com/Ciarands).
 
-`If you liked it :)`
 - Please let me know if you are using this code (just for showcasing) :)
+
+- `If you liked it :)`
+
 <a href="https://www.buymeacoffee.com/cooldevguy"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a cool-milk&emoji=🥛&slug=cooldevguy&button_colour=222222&font_colour=ffffff&font_family=Lato&outline_colour=ffffff&coffee_colour=FFDD00" /></a>
 
 ### FEATURES
