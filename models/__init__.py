@@ -1,10 +1,7 @@
 from .subtitle import subfetch
-VERSION = '1.0.0'
-from .upcloud import get as upcloudget
-from .vidcloud import get as vidcloudget
+VERSION = '2.0.0'
 from .vidsrcme import get as vidsrcmeget
 from .vidsrcto import get as vidsrctoget
-from .smashystream import get as smashyget
 # UTILS
 def info():
     return {
