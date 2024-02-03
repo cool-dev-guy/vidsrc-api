@@ -1,4 +1,5 @@
-# API --- vidsrc.me --- provider
+# API --- superembed --- vidsrc.me provider
+# file made by @cool-dev-guy using @Ciarands hunter extractor/resolver
 import re
 import requests
 from bs4 import BeautifulSoup
