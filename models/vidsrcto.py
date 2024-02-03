@@ -1,115 +1,22 @@
-import re
-import requests
-import base64
 from urllib.parse import unquote
-def int_2_base(x, base) -> str:
-    charset = list(
-        "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/")
-
-    if x < 0:
-      sign = -1
-    elif x == 0:
-      return 0
-    else:
-      sign = 1
-
-    x *= sign
-    digits = []
-
-    while x:
-      digits.append(charset[int(x % base)])
-      x = int(x / base)
-
-    if sign < 0:
-      digits.append('-')
-    digits.reverse()
-
-    return ''.join(digits)
-def unpack(p, a, c, k, e=None, d=None) -> str:
-    for i in range(c - 1, -1, -1):
-      if k[i]: p = re.sub("\\b" + int_2_base(i, a) + "\\b", k[i], p)
-    return p
-def key_permutation(key, data) -> str:
-    state = list(range(256))
-    index_1 = 0
-
-    for i in range(256):
-      index_1 = ((index_1 + state[i]) + ord(key[i % len(key)])) % 256
-      state[i], state[index_1] = state[index_1], state[i]
-
-    index_1 = index_2 = 0
-    final_key = ''
-
-    for char in range(len(data)):
-      index_1 = (index_1 + 1) % 256
-      index_2 = (index_2 + state[index_1]) % 256
-      state[index_1], state[index_2] = state[index_2], state[index_1]
-
-      if isinstance(data[char], str):
-        final_key += chr(
-            ord(data[char]) ^ state[(state[index_1] + state[index_2]) % 256])
-      elif isinstance(data[char], int):
-        final_key += chr((data[char])
-                         ^ state[(state[index_1] + state[index_2]) % 256])
-    return final_key
-async def handle_vidplay(url) -> str:
-    key1, key2 = requests.get(
-        # KEY PROVIDERS
-        # 'https://raw.githubusercontent.com/Claudemirovsky/worstsource-keys/keys/keys.json'
-        # 'https://raw.githubusercontent.com/rawgimaster/vidsrc-keys/main/keys.json'
-        'https://raw.githubusercontent.com/Ciarands/vidsrc-keys/main/keys.json'
-    ).json()  # love u claude
-    decoded_id = key_permutation(key1, url.split('/e/')[1].split('?')[0]).encode('Latin_1')
-    encoded_result = key_permutation(key2, decoded_id).encode('Latin_1')
-    encoded_base64 = base64.b64encode(encoded_result)
-    key = encoded_base64.decode('utf-8').replace('/', '_')
-
-    req = requests.get("https://vidplay.site/futoken", {"Referer": url})
-    fu_key = re.search(r"var\s+k\s*=\s*'([^']+)'", req.text).group(1)
-    data = f"{fu_key},{','.join([str(ord(fu_key[i % len(fu_key)]) + ord(key[i])) for i in range(len(key))])}"
-    
-    req = requests.get(
-        f"https://vidplay.site/mediainfo/{data}?{url.split('?')[1]}&autostart=true",
-        headers={"Referer": url})
-    req_data = req.json()
-
-    if type(req_data.get("result")) == dict:
-      return req_data.get("result").get("sources", [{}])[0].get("file")
-    return 1401
-async def handle_filemoon(url) -> str:
-    req = requests.get(url)
-    matches = re.search(r'return p}\((.+)\)', req.text)
-    processed_matches = []
-
-    if not matches:
-      for i in range(10):
-        req = requests.get(url)
-        matches = re.search(r'return p}\((.+)\)', req.text)
-        if matches != None:break
-    if not matches:
-      return 1402
-
-    split_matches = matches.group(1).split(",")
-    corrected_split_matches = [",".join(split_matches[:-3])
-                               ] + split_matches[-3:]
-
-    for val in corrected_split_matches:
-      val = val.strip()
-      val = val.replace(".split('|'))", "")
-      if val.isdigit() or (val[0] == "-" and val[1:].isdigit()):
-        processed_matches.append(int(val))
-      elif val[0] == "'" and val[-1] == "'":
-        processed_matches.append(val[1:-1])
-
-    processed_matches[-1] = processed_matches[-1].split("|")
-    unpacked = unpack(*processed_matches)
-    hls_url = re.search(r'file:"([^"]*)"', unpacked).group(1)
-    return hls_url
-
+import httpx,asyncio,base64,requests
+from bs4 import BeautifulSoup
+from . import vidplay,filemoon,utils
 async def vidsrcto(source_id) -> str:
-    req = requests.get(f"https://vidsrc.to/ajax/embed/source/{source_id}")
-    data = req.json()
-    encrypted_source_url = data.get("result", {}).get("url")
+    # SHIT
+    MAX_ATTEMPTS = 10
+    for i in range(MAX_ATTEMPTS):
+        print(i)
+        try:
+            req = requests.get(f"https://vidsrc.to/ajax/embed/source/{source_id}")
+            data = req.json()
+            encrypted_source_url = data.get("result", {}).get("url")
+            break
+        except:
+            data = None
+            encrypted_source_url = None
+            pass
+    
 
 
     standardized_input = encrypted_source_url.replace('_', '/').replace('-', '+')
@@ -117,7 +24,7 @@ async def vidsrcto(source_id) -> str:
 
     encoded = bytearray(binary_data)
 
-
+    # SPECIAL [KEY]
     key_bytes = bytes('8z5Ag5wgagfsOuhz', 'utf-8')
     j = 0
     s = bytearray(range(256))
@@ -139,3 +46,41 @@ async def vidsrcto(source_id) -> str:
 
     decoded_text = decoded.decode('utf-8')
     return unquote(decoded_text)
+
+async def get(dbid:str,s:int=None,e:int=None):
+    provider = "imdb" if ("tt" in dbid) else "tmdb"
+    media = 'tv' if s is not None and e is not None else "movie"
+    sources = ['Vidplay','Filemoon']
+    url = f"https://vidsrc.to/embed/{media}/{dbid}"
+    url += f"/{s}/{e}" if s and e else ''
+    async with httpx.AsyncClient() as client:
+        #SHITTT
+        MAX_ATTEMPTS = 5
+        for i in range(MAX_ATTEMPTS):
+            try:
+                req = await client.get(url)
+                soup = BeautifulSoup(req.text, "html.parser")
+                sources_code = soup.find('a', {'data-id': True}).get("data-id",None)
+                break
+            except:
+                sources_code = None
+                continue
+        
+        if sources_code == None:return 1404
+        req = await client.get(f"https://vidsrc.to/ajax/embed/episode/{sources_code}/sources")
+        data = req.json()
+        sources = {video.get("title"): video.get("id") for video in data.get("result")}
+
+        filemoon_id = sources.get('Filemoon', None)
+        vidplay_id = sources.get('Vidplay', None)
+        if not filemoon_id and not vidplay_id:
+            return 1404
+        results = await asyncio.gather(
+            vidsrcto(vidplay_id) if vidplay_id else utils.default(),
+            vidsrcto(filemoon_id) if filemoon_id else utils.default()
+        )
+        streams = await asyncio.gather(
+            vidplay.handle_vidplay(results[0]) if "vidplay" in results[0] else utils.default(),
+            filemoon.handle_filemoon(results[1]) if "filemoon" in results[1] else utils.default(),
+        )
+        return [{"name":"Vidplay","data":streams[0]},{"name":"Filemoon","data":streams[1]}]
