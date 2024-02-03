@@ -1,3 +1,5 @@
+# API --- vidplay --- vidsrc.to provider
+# file made by @cool-dev-guy using @Ciarands resolver to support fastapi.
 import requests
 from typing import Union
 from . import subtitle
@@ -39,6 +41,7 @@ async def handle_vidplay(url) -> str:
     key1, key2 = requests.get(
         'https://raw.githubusercontent.com/Ciarands/vidsrc-keys/main/keys.json'
     ).json()
+    # keys hosted by Ciarands (thanks) this is coooolll....:)
     decoded_id = decode_data(key1, url[0].split('/e/')[-1])
     encoded_result = decode_data(key2, decoded_id)
     encoded_base64 = base64.b64encode(encoded_result)
@@ -56,3 +59,4 @@ async def handle_vidplay(url) -> str:
       return {'file':req_data.get("result").get("sources", [{}])[0].get("file"),
               'sub':subtitles}
     return 1401
+# file made by @cool-dev-guy
