@@ -67,3 +67,6 @@ ERROR CODES
 1500 : not found error.
 500  : internal error/fetch error
 ```
+
+### OTHER PROJECTS
+- [cool-proxy](https://github.com/cool-dev-guy/cool-proxy) - A proxy made in C++
