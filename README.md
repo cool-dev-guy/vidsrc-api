@@ -18,7 +18,7 @@ A simple web scrapper based on this [resolver](https://github.com/Ciarands).
 ```
 ### USAGE (`GET`)
 - base url:
-  https://vidsrc-api-five.vercel.app
+  https://api-movie-source.vercel.app [MAY CHANGE]
 
 - endpoints:
   - `/source/{db_id}`
