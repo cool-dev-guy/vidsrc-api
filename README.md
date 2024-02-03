@@ -8,7 +8,7 @@ A simple web scrapper based on this [resolver](https://github.com/Ciarands).
 - async support
 - parallel execution
 - very fast results
-- subtitle support
+- subtitle support for enery sources.
 ```
 ### NOTES
 ```
@@ -18,17 +18,33 @@ A simple web scrapper based on this [resolver](https://github.com/Ciarands).
 ```
 ### USAGE (`GET`)
 - base url:
-  https://api-movie-source.vercel.app [MAY CHANGE]
+  https://api-movie-source.vercel.app
 
 - endpoints:
-  - `/source/{db_id}`
-  - `/extra/{db_id}`
+  - `/vidsrc/{db_id}`
+  - `/vsrcme/{db_id}`
   - `/subs/?url={subtitle_url@opensubtitles.org}`
 
 - parameters:
   - `s` - season (series only)
   - `e` - episodes (series only)
   - `l` - language(subtitle)
+
+### RESPONSE SCEMA
+  - [UPDATE] Added a common response scheam for the endpoints,so every source is an element of an array.And the api retruns an array.
+
+```json
+[
+  {
+    "name": "SOURCE_NAME",
+    "data": {
+      "file": "FILE.m3u8",
+      "sub": "SUBTITLES"
+    }
+  }
+]
+
+```
 
 ### ERROR CODES
 ```
