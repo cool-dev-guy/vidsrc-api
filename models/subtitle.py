@@ -22,7 +22,7 @@ async def subfetch(code, language) -> Optional[str]:
     if response.status_code == 200:
         best_subtitle = max(response.json(), key=lambda x: x.get('score', 0), default=None)
         if best_subtitle is None:return None
-        return f"{sub_base_url}{best_subtitle.get('SubDownloadLink')}"
+        return [{"lang":str(language),"file":f"{sub_base_url}{best_subtitle.get('SubDownloadLink')}"}]
     return 1310
 async def vscsubs(url):
     subtitles_url = re.search(r"info=([^&]+)", url)
@@ -36,8 +36,8 @@ async def vscsubs(url):
             req = requests.get(subtitles_url_formatted)
                 
             if req.status_code == 200:
-                return {subtitle.get("label"): subtitle.get("file") for subtitle in req.json()}
+                return [{"lang":subtitle.get("label"),"file":subtitle.get("file")} for subtitle in req.json()]
         except:
             continue
-    return {}
+    return 1310
 # file made by @cool-dev-guy
