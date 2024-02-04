@@ -47,7 +47,32 @@ A simple web scrapper based on this [resolver](https://github.com/Ciarands).
     "name": "SOURCE_NAME",
     "data": {
       "file": "FILE.m3u8",
-      "sub": "SUBTITLES"
+      "sub": [
+        {
+          "lang":"LANGUAGE",
+          "file":"FILE.srt"
+        }
+        {
+          "lang":"LANGUAGE",
+          "file":"FILE.srt"
+        }
+      ]
+    }
+  }
+  {
+    "name": "SOURCE_NAME_2",
+    "data": {
+      "file": "FILE.m3u8",
+      "sub": [
+        {
+          "lang":"LANGUAGE",
+          "file":"FILE.srt"
+        }
+        {
+          "lang":"LANGUAGE",
+          "file":"FILE.srt"
+        }
+      ]
     }
   }
 ]
