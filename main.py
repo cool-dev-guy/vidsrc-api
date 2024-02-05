@@ -48,3 +48,7 @@ async def subs(url: str):
         raise HTTPException(status_code=500, detail=f"Error fetching subtitle: {e}")
 
     raise HTTPException(status_code=404, detail="Subtitle not found")
+
+@app.get('/info')
+async def vidsrc():
+    return {'info':'This api is a fork of api written by github.com/cool-dev-guy.'}
