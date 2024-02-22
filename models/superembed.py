@@ -26,7 +26,7 @@ async def handle_superembed(location,source,_seed):
         return f"1308 {location}",_seed
     processed_hunter_args = process_hunter_args(hunter_args.group(1))
     unpacked = hunter.hunter(*processed_hunter_args)
-    subtitles = {}
+    subtitles = []
     hls_urls = re.findall(r"file:\"([^\"]*)\"", unpacked)
     subtitle_match = re.search(r"subtitle:\"([^\"]*)\"", unpacked)
     if subtitle_match:
@@ -34,6 +34,6 @@ async def handle_superembed(location,source,_seed):
             subtitle_data = re.search(r"^\[(.*?)\](.*$)", subtitle)
             if not subtitle_data:
                 continue
-            subtitles.update({subtitle_data.group(1): subtitle_data.group(2)})
+            subtitles.append({'lang':subtitle_data.group(1),'file':subtitle_data.group(2)})
         # print(subtitles)
     return hls_urls[0],subtitles
