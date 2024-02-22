@@ -1,7 +1,7 @@
 # vidsrc-api
 
-[![Status](https://img.shields.io/badge/status-running-brightgreen)](https://example.com)
-[![Deployment](https://img.shields.io/badge/deployment-success-blue)](https://example.com)
+[![Status](https://img.shields.io/badge/status-running-red)](https://api-movie-source.vercel.app/)
+[![Deployment](https://img.shields.io/badge/deployment-success-blue)](https://api-movie-source.vercel.app/)
 
 `STATUS` - `(UPDATED FEB/22/24)`
 - The opensubtitles.org is under construction,So there will be errors for VidPlay Subs.
