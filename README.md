@@ -1,7 +1,15 @@
 # vidsrc-api
-`[ PROJECT HAS UNDERGONE VERY LARGE CHANGES IN STRUCTURE AND CONTENT ]`
+
+[![Status](https://img.shields.io/badge/status-running-brightgreen)](https://example.com)
+[![Deployment](https://img.shields.io/badge/deployment-success-blue)](https://example.com)
+
+`STATUS` - `(UPDATED FEB/22/24)`
+- The opensubtitles.org is under construction,So there will be errors for VidPlay Subs.
+- The filemoon has restrictions on vercel,so if you need filemoon,proxy it or run on a different platform.
 
 A simple web scrapper based on this [resolver](https://github.com/Ciarands).
+
+## About
 
 - Please let me know if you are using this code (just for showcasing) :)
 
