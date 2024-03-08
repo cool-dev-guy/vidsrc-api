@@ -18,8 +18,10 @@ def process_hunter_args(hunter_args: str) -> List:
     processed_matches[5] = int(processed_matches[5])
     return processed_matches
 async def handle_superembed(location,source,_seed):
-    # print("STARTS\n",source,"\nBREAKS\n",location,"\nENDS")
-    req = requests.get(location, headers={"Referer":  f"https://rcp.vidsrc.me/rcp/{source}"})
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
+    }
+    req = requests.get(location,headers=headers)
     hunter_args = re.search(r"eval\(function\(h,u,n,t,e,r\).*?}\((.*?)\)\)", req.text)
     processed_values = []
     if not hunter_args:
