@@ -33,7 +33,7 @@ A simple web scrapper based on this [resolver](https://github.com/Ciarands).
 ```
 ### USAGE (`GET`)
 - base url:
-  https://api-movie-source.vercel.app
+  https://api-source-movie.vercel.app
 
 - endpoints:
   - `/vidsrc/{db_id}`
