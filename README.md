@@ -3,9 +3,9 @@
 [![Status](https://img.shields.io/badge/status-running-red)](https://api-movie-source.vercel.app/)
 [![Deployment](https://img.shields.io/badge/deployment-success-blue)](https://api-movie-source.vercel.app/)
 
-`STATUS` - `(UPDATED FEB/22/24)`
-- The opensubtitles.org is under construction,So there will be errors for VidPlay Subs.
-- The filemoon has restrictions on vercel,so if you need filemoon,proxy it or run on a different platform.
+`STATUS`- `WORKING` - `(UPDATED MAR/08/24)`
+- Everything Works - SuperEmbed Fixed on latest commit.
+- The filemoon has restrictions on vercel,so if you need filemoon,proxy it or run on a different platform.(It seems its not working...)
 
 A simple web scrapper based on this [resolver](https://github.com/Ciarands).
 
