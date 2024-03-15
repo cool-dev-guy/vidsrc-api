@@ -73,8 +73,9 @@ async def get(dbid:str,s:int=None,e:int=None):
         data = req.json()
         sources = {video.get("title"): video.get("id") for video in data.get("result")}
 
-        filemoon_id = sources.get('keraproxy', None)
-        vidplay_id = sources.get('55a0716b8c', None)
+        filemoon_id = sources.get('Filemoon', None)
+        vidplay_id = sources.get('Vidplay', None)
+        
         if not filemoon_id and not vidplay_id:
             return 1404
         results = await asyncio.gather(
@@ -82,7 +83,7 @@ async def get(dbid:str,s:int=None,e:int=None):
             vidsrcto(filemoon_id) if filemoon_id else utils.default()
         )
         streams = await asyncio.gather(
-            vidplay.handle_vidplay(results[0]) if "vidplay" in results[0] else utils.default(),
-            filemoon.handle_filemoon(results[1]) if "filemoon" in results[1] else utils.default(),
+            vidplay.handle_vidplay(results[0]) if "55a0716b8c" in results[0] else utils.default(),
+            filemoon.handle_filemoon(results[1]) if "keraproxy" in results[1] else utils.default(),
         )
         return [{"name":"Vidplay","data":streams[0]},{"name":"Filemoon","data":streams[1]}]
