@@ -73,8 +73,8 @@ async def get(dbid:str,s:int=None,e:int=None):
         data = req.json()
         sources = {video.get("title"): video.get("id") for video in data.get("result")}
 
-        filemoon_id = sources.get('Filemoon', None)
-        vidplay_id = sources.get('Vidplay', None)
+        filemoon_id = sources.get('keraproxy', None)
+        vidplay_id = sources.get('55a0716b8c', None)
         if not filemoon_id and not vidplay_id:
             return 1404
         results = await asyncio.gather(
