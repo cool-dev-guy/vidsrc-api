@@ -3,13 +3,23 @@
 [![Status](https://img.shields.io/badge/status-running-red)](https://api-movie-source.vercel.app/)
 [![Deployment](https://img.shields.io/badge/deployment-success-blue)](https://api-movie-source.vercel.app/)
 
-`STATUS`- `WORKING` - `(UPDATED MAR/15/24)`
-- Everything Works - Vidsrc.to fixed on last commit.
+`STATUS`- `WORKING` - `(UPDATED MAR/17/24)`
+- Everything Works - Vidsrc.to NEW ISSUE fixed on last commit.So update it to make it work.
 - The filemoon has restrictions on vercel,so if you need filemoon,proxy it or run on a different platform.(It seems its not working...)
 
 A simple web scrapper based on this [resolver](https://github.com/Ciarands).
 
 ## About
+
+- Deploying
+  
+    Project specifically made to run on vercel,but easy to deploy on other platforms.Just check the running fastapi on the specific platform.
+- Running it locally
+
+  1.Fork and Clone the repo.
+  2.Create a virtial env if you want.
+  3.install the deps.[`pip install -r requirements.txt`]
+  4.run it using uvicorn.[`uvicorn main:app --reload`]
 
 - If you liked it :)
 
