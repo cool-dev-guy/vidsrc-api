@@ -83,7 +83,7 @@ async def get(dbid:str,s:int=None,e:int=None):
             vidsrcto(filemoon_id) if filemoon_id else utils.default()
         )
         streams = await asyncio.gather(
-            vidplay.handle_vidplay(results[0]) if "55a0716b8c" in results[0] else utils.default(),
+            vidplay.handle_vidplay(results[0]) if "vidplay.online" in results[0] else utils.default(),
             filemoon.handle_filemoon(results[1]) if "keraproxy" in results[1] else utils.default(),
         )
         return [{"name":"Vidplay","data":streams[0]},{"name":"Filemoon","data":streams[1]}]
