@@ -15,6 +15,7 @@ A simple web scrapper based on this [resolver](https://github.com/Ciarands).
 - Deploying
   
     Project specifically made to run on vercel,but easy to deploy on other platforms.Just check the running fastapi on the specific platform.
+    Vercel is facing a bug recently so setting node version to 18.x is a fix for it.
 - Running it locally
 
   1.Fork and Clone the repo.
