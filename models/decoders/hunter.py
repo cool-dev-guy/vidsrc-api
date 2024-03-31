@@ -1,6 +1,5 @@
-# THE hunter DECODER
-# file made by @cool-dev-guy by using @Ciarands hunter decoder.(thanks Ciarands)
-def hunter_def(d, e, f) -> int:
+import re
+async def hunter_def(d, e, f) -> int:
     charset = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/"
     source_base = charset[0:e]
     target_base = charset[0:f]
@@ -18,7 +17,7 @@ def hunter_def(d, e, f) -> int:
         result = (result - (result % f)) // f
 
     return int(converted_result) or 0
-def hunter( h, u, n, t, e, r) -> str:
+async def hunter( h, u, n, t, e, r) -> str:
         i = 0
         result_str = ""
         while i < len(h):
@@ -32,7 +31,17 @@ def hunter( h, u, n, t, e, r) -> str:
                 s = s.replace(n[j], str(j))
                 j += 1
 
-            result_str += chr(hunter_def(s, e, 10) - t)
+            result_str += chr(await hunter_def(s, e, 10) - t)
             i += 1
 
         return result_str
+async def process_hunter_args(hunter_args: str) -> list:
+    hunter_args = re.search(r"^\"(.*?)\",(.*?),\"(.*?)\",(.*?),(.*?),(.*?)$", hunter_args)
+    processed_matches = list(hunter_args.groups())
+    processed_matches[0] = str(processed_matches[0])
+    processed_matches[1] = int(processed_matches[1])
+    processed_matches[2] = str(processed_matches[2])
+    processed_matches[3] = int(processed_matches[3])
+    processed_matches[4] = int(processed_matches[4])
+    processed_matches[5] = int(processed_matches[5])
+    return processed_matches
