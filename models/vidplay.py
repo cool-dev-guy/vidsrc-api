@@ -1,11 +1,9 @@
-# API --- vidplay --- vidsrc.to provider
-# file made by @cool-dev-guy using @Ciarands resolver to support fastapi.
-import requests
+from .utils import fetch
 from typing import Union
 from . import subtitle
 import re
 import base64
-def decode_data(key: str, data: Union[bytearray, str]) -> bytearray:
+async def decode_data(key: str, data: Union[bytearray, str]) -> bytearray:
     key_bytes = bytes(key, 'utf-8')
     s = bytearray(range(256))
     j = 0
@@ -32,31 +30,37 @@ def decode_data(key: str, data: Union[bytearray, str]) -> bytearray:
             return None
 
     return decoded
-async def handle_vidplay(url) -> str:
-    furl = url
-    url = url.split("?")
-    # SUBS = url[1]
-    subtitles = {}
-    subtitles = await subtitle.vscsubs(url[1])
-    key1, key2 = requests.get(
-        'https://raw.githubusercontent.com/Ciarands/vidsrc-keys/main/keys.json'
-    ).json()
-    # keys hosted by Ciarands (thanks) this is coooolll....:)
-    decoded_id = decode_data(key1, url[0].split('/e/')[-1])
-    encoded_result = decode_data(key2, decoded_id)
-    encoded_base64 = base64.b64encode(encoded_result)
-    key = encoded_base64.decode('utf-8').replace('/', '_')
+async def handle(url) -> dict:
+    URL = url.split("?")
+    SRC_URL = URL[0]
+    SUB_URL = URL[1]
 
-    req = requests.get("https://vidplay.online/futoken", {"Referer": url})
+    # GET SUB
+    subtitles = {}
+    subtitles = await subtitle.vscsubs(SUB_URL)
+
+    # DECODE SRC
+    key_req        = await fetch('https://raw.githubusercontent.com/Ciarands/vidsrc-keys/main/keys.json')
+    key1,key2      = key_req.json()
+    decoded_id     = await decode_data(key1, SRC_URL.split('/e/')[-1])
+    encoded_result = await decode_data(key2, decoded_id)
+    encoded_base64 = base64.b64encode(encoded_result)
+    key            = encoded_base64.decode('utf-8').replace('/', '_')
+
+    # GET FUTOKEN
+    req = await fetch("https://vidplay.online/futoken", {"Referer": url})
     fu_key = re.search(r"var\s+k\s*=\s*'([^']+)'", req.text).group(1)
     data = f"{fu_key},{','.join([str(ord(fu_key[i % len(fu_key)]) + ord(key[i])) for i in range(len(key))])}"
     
-    req = requests.get(
-        f"https://vidplay.online/mediainfo/{data}?{url[1]}&autostart=true",
-        headers={"Referer": furl})
+    # GET SRC
+    req = await fetch(f"https://vidplay.online/mediainfo/{data}?{SUB_URL}&autostart=true",headers={"Referer": url})
     req_data = req.json()
+
+    # RETURN IT
     if type(req_data.get("result")) == dict:
-      return {'file':req_data.get("result").get("sources", [{}])[0].get("file"),
-              'sub':subtitles}
-    return 1401
-# file made by @cool-dev-guy
+        return {
+            'stream':req_data.get("result").get("sources", [{}])[0].get("file"),
+            'subtitle':subtitles
+        }
+    else:
+        return {}
