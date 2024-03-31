@@ -4,8 +4,9 @@
 [![Deployment](https://img.shields.io/badge/deployment-success-blue)](https://api-movie-source.vercel.app/)
 
 `STATUS`- `WORKING` - `(UPDATED MAR/31/24)`
-- Added quick fixes for filemoon/vidplay/vidsrcPRO.
-- Everything Works except multiembed - beacuse their site is facing some issues.so it will be fixed when the site is ready.
+- Added stable fixes for most of the sources so it wont break too often.
+- Everything Works currently and the speed has also increased in the latest commit dut o use of non-blocking async functions.
+- Still the code may have some bugs,so feel free to post bugs in the issue section :)
 
 A simple web scrapper based on this [resolver](https://github.com/Ciarands).
 
@@ -17,22 +18,26 @@ A simple web scrapper based on this [resolver](https://github.com/Ciarands).
 - Running it locally
 
   1.Fork and Clone the repo.
+  
   2.Create a virtial env if you want.
+
   3.install the deps.[`pip install -r requirements.txt`]
-  4.run it using uvicorn.[`uvicorn main:app --reload`]
 
-- If you liked it :)
+  4.open `models/utils.py` and change the value of `BASE` to your `api-base-url`/`deployment-base-url`.( for subtitle )
+  
+  5.run it using uvicorn.[`uvicorn main:app --reload --port=8000`]
 
-<a href="https://www.buymeacoffee.com/cooldevguy"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a cool-milk&emoji=🥛&slug=cooldevguy&button_colour=222222&font_colour=ffffff&font_family=Lato&outline_colour=ffffff&coffee_colour=FFDD00" /></a>
+- If you liked the project and updates `buy me a coffee` :)
 
-- If any issues,drop an issue on github.
+    <a href="https://www.buymeacoffee.com/cooldevguy"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a cool-milk&emoji=🥛&slug=cooldevguy&button_colour=222222&font_colour=ffffff&font_family=Lato&outline_colour=ffffff&coffee_colour=FFDD00" /></a>
+
+- If any issues,drop an issue on `github issues`.
 
 ### FEATURES
 ```
-- async support - There will be an update soon for completely changing the code to async to increase speed.
-- parallel execution
+- async support - Most process are async but still some fixes are needed.
 - very fast results
-- subtitle support for enery sources.
+- subtitle support for every sources.
 ```
 ### NOTES
 ```
@@ -42,8 +47,8 @@ A simple web scrapper based on this [resolver](https://github.com/Ciarands).
 - Dont perform bulk request to the api and store the m3u8's returned,cuz they may not work after 24 hours or so.This api scrape websites that have `video on demand` feature so storing it is useless.
 ```
 ### USAGE (`GET`)
-- base url:
-  https://api-source-movie.vercel.app
+- example base url:
+  https://api.vercel.app
 
 - endpoints:
   - `/vidsrc/{db_id}`
@@ -55,6 +60,8 @@ A simple web scrapper based on this [resolver](https://github.com/Ciarands).
   - `e` - episodes (series only)
   - `l` - language(subtitle)
 
+- example url (movie) : `https://api.vercel.app/vidsrc/ttXXXXXX`
+- example url (series) : `https://api.vercel.app/vidsrc/ttXXXXXX?s=1&e=2`
 ### RESPONSE SCEMA
 > [UPDATE] Added a common response scheam for the endpoints,so every source is an element of an array.And the api retruns an array.
 
@@ -65,7 +72,7 @@ A simple web scrapper based on this [resolver](https://github.com/Ciarands).
     "name": "SOURCE_NAME",
     "data": {
       "file": "FILE.m3u8",
-      "sub": [
+      "subtitle": [
         {
           "lang":"LANGUAGE",
           "file":"FILE.srt"
@@ -78,10 +85,10 @@ A simple web scrapper based on this [resolver](https://github.com/Ciarands).
     }
   }
   {
-    "name": "SOURCE_NAME_2",
+    "name": "SOURCE_NAME",
     "data": {
       "file": "FILE.m3u8",
-      "sub": [
+      "subtitle": [
         {
           "lang":"LANGUAGE",
           "file":"FILE.srt"
@@ -101,16 +108,7 @@ A simple web scrapper based on this [resolver](https://github.com/Ciarands).
 ```
 ERROR CODES
 ===========
-1402 : filemoon error.[filemoon domain whitelisting][solution:retry]
-1308 : multiembed captcha error.[solution:retry/do captcha]
-1309 : vidsrcPro error.[decode error][solution:retry]
-1310 : subtitle fetch error.[reload]
-
-1404 : no sources found.
-1401 : vidplay error.
-
-1500 : not found error.
-500  : internal error/fetch error
+TODO
 ```
 
 ### OTHER PROJECTS
