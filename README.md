@@ -3,9 +3,9 @@
 [![Status](https://img.shields.io/badge/status-running-red)](https://api-movie-source.vercel.app/)
 [![Deployment](https://img.shields.io/badge/deployment-success-blue)](https://api-movie-source.vercel.app/)
 
-`STATUS`- `WORKING` - `(UPDATED MAR/17/24)`
-- Everything Works - Vidsrc.to NEW ISSUE fixed on last commit.So update it to make it work.
-- The filemoon has restrictions on vercel,so if you need filemoon,proxy it or run on a different platform.(It seems its not working...)
+`STATUS`- `WORKING` - `(UPDATED MAR/31/24)`
+- Added quick fixes for filemoon/vidplay/vidsrcPRO.
+- Everything Works except multiembed - beacuse their site is facing some issues.so it will be fixed when the site is ready.
 
 A simple web scrapper based on this [resolver](https://github.com/Ciarands).
 
