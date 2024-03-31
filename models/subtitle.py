@@ -1,6 +1,5 @@
 # CUSTOM utility FUNCTIONS FOR SUBTITLE MANAGEMENT.
 from typing import Optional
-import requests
 from .utils import fetch,BASE
 from urllib.parse import unquote
 import re
