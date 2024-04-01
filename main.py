@@ -19,17 +19,36 @@ async def index():
 @app.get('/vidsrc/{dbid}')
 async def vidsrc(dbid:str,s:int=None,e:int=None):
     if dbid:
-        return await vidsrctoget(dbid,s,e)
+        return {
+            "status":200,
+            "info":"succes",
+            "sources":await vidsrctoget(dbid,s,e)
+        }
     else:
         raise HTTPException(status_code=404, detail=f"Invalid id: {dbid}")
 
 @app.get('/vsrcme/{dbid}')
 async def vsrcme(dbid:str = '',s:int=None,e:int=None,l:str='eng'):
     if dbid:
-        return await vidsrcmeget(dbid,s,e)
+        return {
+            "status":200,
+            "info":"succes",
+            "sources":await vidsrcmeget(dbid,s,e)
+        }
     else:
         raise HTTPException(status_code=404, detail=f"Invalid id: {dbid}")
 
+@app.get('/streams/{dbid}')
+async def streams(dbid:str = '',s:int=None,e:int=None,l:str='eng'):
+    if dbid:
+        return {
+            "status":200,
+            "info":"succes",
+            "sources":await vidsrcmeget(dbid,s,e) + await vidsrctoget(dbid,s,e)
+        }
+    else:
+        raise HTTPException(status_code=404, detail=f"Invalid id: {dbid}")
+    
 @app.get("/subs")
 async def subs(url: str):
     try:
@@ -42,3 +61,4 @@ async def subs(url: str):
 
     except:
         raise HTTPException(status_code=500, detail=f"Error fetching subtitle")
+
