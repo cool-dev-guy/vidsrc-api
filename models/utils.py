@@ -14,6 +14,7 @@ async def error(err:str):
     #        "info":err,
     #        "sources":[]
     #    }
+    print(err) # for understanding whats gone wrong in the deployment.viewable in vercel logs.
     return {}
 async def decode_url(encrypted_source_url:str,VIDSRC_KEY:str):
     standardized_input = encrypted_source_url.replace('_', '/').replace('-', '+')
