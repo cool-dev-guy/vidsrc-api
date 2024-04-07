@@ -21,7 +21,7 @@ async def vidsrc(dbid:str,s:int=None,e:int=None):
     if dbid:
         return {
             "status":200,
-            "info":"succes",
+            "info":"success",
             "sources":await vidsrctoget(dbid,s,e)
         }
     else:
@@ -32,7 +32,7 @@ async def vsrcme(dbid:str = '',s:int=None,e:int=None,l:str='eng'):
     if dbid:
         return {
             "status":200,
-            "info":"succes",
+            "info":"success",
             "sources":await vidsrcmeget(dbid,s,e)
         }
     else:
@@ -43,7 +43,7 @@ async def streams(dbid:str = '',s:int=None,e:int=None,l:str='eng'):
     if dbid:
         return {
             "status":200,
-            "info":"succes",
+            "info":"success",
             "sources":await vidsrcmeget(dbid,s,e) + await vidsrctoget(dbid,s,e)
         }
     else:
