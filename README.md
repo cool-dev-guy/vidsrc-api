@@ -14,8 +14,12 @@ A simple web scrapper based on this [resolver](https://github.com/Ciarands).
 
 - Deploying
   
-    Project specifically made to run on vercel,but easy to deploy on other platforms.Just check the running fastapi on the specific platform.
+    - Project specifically made to run on vercel,but easy to deploy on other platforms.Just check the running fastapi on the specific platform.
 
+    - Project is easy to deploy on vercel.
+      
+      [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/cool-dev-guy/vidsrc-api)
+  
     `IMPORTANT `: Vercel is facing a bug recently so setting node version to `18.x` is a fix for it.
   
     *_there's an detailed explanation in this issue [link](https://github.com/cool-dev-guy/vidsrc-api/issues/12#issuecomment-2032147362)_
