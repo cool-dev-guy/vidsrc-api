@@ -12,18 +12,39 @@ A simple web scrapper based on this [resolver](https://github.com/Ciarands).
 
 ## About
 
-- Deploying
+- ### Deploying methods.
   
-    - Project specifically made to run on vercel,but easy to deploy on other platforms.Just check the running fastapi on the specific platform.
+    - #### _Any Platform_
+      Project specifically made to run on vercel,but easy to deploy on other platforms.Just check the running fastapi on the specific platform.
 
-    - Project is easy to deploy on vercel.
-      
+    - #### _Vercel_
+      Project is easy to deploy on vercel.
+ 
+      1. `Fork` this `repo`.
+      2. Open vercel and create `new project` and choose your `forked repo`.
+      3. Use the default settings and click `deploy`.
+      4. Your build will `surely fail` because of [this](https://github.com/orgs/vercel/discussions/6287)
+         
+         ![img](https://raw.githubusercontent.com/cool-dev-guy/project-docs/main/vidsrc-api/st1.png)
+         
+          *_vercel's latest update.Node.js version 20.x dosent fully support python._
+      6. Now open the project's settings and scroll down.Now you can see a row caled `Node Version`.
+          `CHANGE it to 18.x`
+         
+         ![img](https://raw.githubusercontent.com/cool-dev-guy/project-docs/main/vidsrc-api/st2.png)
+         
+         *_there's an detailed explanation in this issue [link](https://github.com/cool-dev-guy/vidsrc-api/issues/12#issuecomment-2032147362)_
+    
+    - #### _Vercel easy_
+      Or if vercel fixes this bug,you can use this button.But vercel didnt fix this yet.
+  
       [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/cool-dev-guy/vidsrc-api)
   
-    `IMPORTANT `: Vercel is facing a bug recently so setting node version to `18.x` is a fix for it.
+      `IMPORTANT `: Vercel is facing a bug recently so setting node version to `18.x` is a fix for it.
   
-    *_there's an detailed explanation in this issue [link](https://github.com/cool-dev-guy/vidsrc-api/issues/12#issuecomment-2032147362)_
-- Running it locally
+      *_there's an detailed explanation in this issue [link](https://github.com/cool-dev-guy/vidsrc-api/issues/12#issuecomment-2032147362)_
+      
+- ### Running it locally
 
   1.Fork and Clone the repo.
   
@@ -33,7 +54,7 @@ A simple web scrapper based on this [resolver](https://github.com/Ciarands).
 
   4.open `models/utils.py` and change the value of `BASE` to your `api-base-url`/`deployment-base-url`.( for subtitle )
   
-  5.run it using uvicorn.[`uvicorn main:app --reload --port=8000`]
+  5.install `uvicorn` via `pip install uvicorn` & run it using uvicorn.[`uvicorn main:app --reload --port=8000`]
 
 - If you liked the project and updates `buy me a coffee` :)
 
@@ -59,8 +80,9 @@ A simple web scrapper based on this [resolver](https://github.com/Ciarands).
   https://api.vercel.app
 
 - endpoints:
-  - `/vidsrc/{db_id}`
-  - `/vsrcme/{db_id}`
+  - `/vidsrc/{db_id}`  - vidsrc.to
+  - `/vsrcme/{db_id}`  - vidsrc.me
+  - `/streams/{db_id}` - get streams from all 4 sources in one request.
   - `/subs/?url={subtitle_url@opensubtitles.org}`
 
 - parameters:
@@ -73,44 +95,59 @@ A simple web scrapper based on this [resolver](https://github.com/Ciarands).
 ### RESPONSE SCEMA
 > [UPDATE] Added a common response scheam for the endpoints,so every source is an element of an array.And the api retruns an array.
 
+- `Working`
 
 ```json
-[
-  {
-    "name": "SOURCE_NAME",
-    "data": {
-      "file": "FILE.m3u8",
-      "subtitle": [
-        {
-          "lang":"LANGUAGE",
-          "file":"FILE.srt"
+
+{
+    "status":200,
+    "info":"success",
+    "sources":[
+      {
+        "name": "SOURCE_NAME",
+        "data": {
+          "stream": "FILE.m3u8",
+          "subtitle": [
+            {
+              "lang":"LANGUAGE",
+              "file":"FILE.srt"
+            }
+            {
+              "lang":"LANGUAGE2",
+              "file":"FILE2.srt"
+            }
+          ]
         }
-        {
-          "lang":"LANGUAGE",
-          "file":"FILE.srt"
+      },
+      {
+        "name": "SOURCE_NAME2",
+        "data": {
+          "stream": "FILE2.m3u8",
+          "subtitle": [
+            {
+              "lang":"LANGUAGE",
+              "file":"FILE.srt"
+            }
+            {
+              "lang":"LANGUAGE2",
+              "file":"FILE2.srt"
+            }
+          ]
         }
-      ]
-    }
-  }
-  {
-    "name": "SOURCE_NAME",
-    "data": {
-      "file": "FILE.m3u8",
-      "subtitle": [
-        {
-          "lang":"LANGUAGE",
-          "file":"FILE.srt"
-        }
-        {
-          "lang":"LANGUAGE",
-          "file":"FILE.srt"
-        }
-      ]
-    }
-  }
-]
+      }
+    ]
+}
 
 ```
+
+- `Error/Stream Unavailable`
+
+```json
+{
+    "status":200,
+    "info":"success",
+    "sources":[]
+}
 
 ### ERROR CODES
 ```
