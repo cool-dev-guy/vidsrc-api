@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from . import vidplay,filemoon
 from .utils import fetch,error,decode_url
 
-VIDSRC_KEY:str = "8z5Ag5wgagfsOuhz"
+VIDSRC_KEY:str = "WXrUARXb1aDLaZjI"
 SOURCES:list = ['Vidplay','Filemoon']
 
 async def get_source(source_id:str,SOURCE_NAME:str) -> str:
@@ -59,4 +59,4 @@ async def get(dbid:str,s:int=None,e:int=None):
         except:
             return await error("backend id not working.")
     else:
-        return await error("backend id not working.")
+        return await error(f"backend not working.[{id_request.status_code}]")
