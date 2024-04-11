@@ -5,7 +5,7 @@ from . import subtitle
 MAX_TRIES = 10
 
 async def handle(location,hash,_seed):
-    request = await fetch(location, headers={"Referer": f"https://rcp.vidsrc.me/rcp/{hash}"})
+    request = await fetch(location, headers={"Referer": f"https://vidsrc.stream/rcp/{hash}"})
     for T in range(MAX_TRIES):
         hls_url = re.search(r'file:"([^"]*)"', request.text).group(1)
         hls_url = re.sub(r'\/\/\S+?=', '', hls_url)[2:]     
