@@ -4,7 +4,7 @@ from . import vidsrcpro,superembed
 from .utils import fetch
 SOURCES = ["VidSrc PRO","Superembed"]
 async def get_source(hash:str,url:str):
-    SOURCE_REQUEST = await fetch(f"https://rcp.vidsrc.me/rcp/{hash}",headers={"Referer": url})
+    SOURCE_REQUEST = await fetch(f"https://vidsrc.stream/rcp/{hash}",headers={"Referer": url})
     try:
         _html = BeautifulSoup(SOURCE_REQUEST.text, "html.parser")
         _encoded = _html.find("div", {"id": "hidden"}).get("data-h") if _html.find("div", {"id": "hidden"}) else None
@@ -17,7 +17,7 @@ async def get_source(hash:str,url:str):
         for i in range(len(encoded_buffer)):decoded += chr(encoded_buffer[i] ^ ord(_seed[i % len(_seed)]))
         decoded_url = f"https:{decoded}" if decoded.startswith("//") else decoded
         
-        response = await fetch(decoded_url,redirects=False, headers={"Referer": f"https://rcp.vidsrc.me/rcp/{hash}"})
+        response = await fetch(decoded_url,redirects=False, headers={"Referer": f"https://vidsrc.stream/rcp/{hash}"})
         location = response.headers.get("Location")
         if location is None:
             return {"stream":None,"subtitle":[]}
