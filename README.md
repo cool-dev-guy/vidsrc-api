@@ -1,4 +1,12 @@
 # vidsrc-api
+## UPDATE : PROJECT ABANDONED FOR LIMITED TIME
+#### `MOVED TO` [https://github.com/cool-dev-guy/vidsrc.ts](https://github.com/cool-dev-guy/vidsrc.ts)
+- The providers changed a lot in their code structure.
+- And vidsrc.to is no more...
+- So project moved to NEW [https://github.com/cool-dev-guy/vidsrc.ts](https://github.com/cool-dev-guy/vidsrc.ts)
+  - WHAT'S NEW ?
+    - Code base shifted to use typescript(node/deno compatible)
+    - Fast execution and simple to read code structure.
 
 [![Status](https://img.shields.io/badge/status-running-red)](https://api-movie-source.vercel.app/)
 [![Deployment](https://img.shields.io/badge/deployment-success-blue)](https://api-movie-source.vercel.app/)
